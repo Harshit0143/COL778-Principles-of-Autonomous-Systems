@@ -1,0 +1,27 @@
+\section{More insights after viva}
+\begin{enumerate}
+    \item See \autoref{fig:uncertainty_bar}. We see that initially, the uncertainty bar is very narrow, then it becomes broader and remains more or less constant. This is because our initial belief is very narrow, $\Sigma_0 = 10^{-4}I_2$. $\sigma_{x}$ starts with $0.01$ and finally becomes $\approx 2.44$, increasing very slowly in later time steps. This happens because the error in the motion model keeps accumulating, but it does not increase much beyond a point, as the observations keep making the belief tighter. On the contrary, see \autoref{fig:part2fB3-uncertainty_ellipse}, where the initial belief has large variance.
+
+    \item Consider the setup in a 1D kinematics problem. See \autoref{fig:kalman_filter}, if $\bar{\Sigma}_t = \begin{bmatrix}
+        \alpha_x^2 & \rho \alpha_x \alpha_{\dot{x}}\\
+        \rho \alpha_x \alpha_{\dot{x}}  & \alpha_{\dot{x}}^2
+    \end{bmatrix}$, then assuming $C_t = \begin{bmatrix}1 & 0\end{bmatrix}$, the Kalman Gain is $K_t = \frac{1}{\alpha_x^2 + \sigma_s^2}\begin{bmatrix}
+        \alpha_x^2 \\ \rho \alpha_x \alpha_{\dot{x}}
+    \end{bmatrix}$. We see that the belief in velocity gains from the observation only if the model sees that there's a correlation between velocity and position. The correlation is inferred from the action model. Again, in \autoref{fig:kalman_filter}, if $\Sigma_{t - 1} = \alpha I$, then $A_t\Sigma_{t - 1}A_t^T = \alpha \begin{bmatrix}
+        1 + \Delta t ^ 2 & \Delta t\\
+        \Delta t & 1
+    \end{bmatrix}$. This fundamentally happens because $x_t$ is affected by $v_{t - 1}$.
+
+    \item If we have IMU and GPS sensors with the same $\sigma_x, \sigma_y, \sigma_z$ in both, irrespective of $\sigma_{\dot{x}}, \sigma_{\dot{y}}, \sigma_{\dot{z}}$, the IMU sensor will always perform better than the GPS sensor in expectation. The information about $x, y, z$ provided by both of them is similar. If $\sigma_{\dot{x}}, \sigma_{\dot{y}}, \sigma_{\dot{z}}$ are very low, the IMU will clearly provide more information. Even if they are very high, the Kalman Filter will itself decrease the Kalman Gain from the velocity observations, as their variance is known. In the limit, for example, when the variance in velocity observation is infinite, the Kalman Gain for velocity observation will be zero.
+
+    \item If there were no error in the motion model, the ball would hit the goal at $t = 1.25$ seconds, at $(3.95, 50, 2.95)$, which is very close to the corner of the goal.
+
+    \item It can be proved using induction that in the case of IMU and GPS sensors, $\Sigma_t = \begin{bmatrix}
+        a I_3 & b I_3\\
+        b I_3 & c I_3
+    \end{bmatrix}$. Hence, in \autoref{fig:uncertainty-ellipses}, all ellipses in the filter output are perfect circles. This is due to the particular forms of $A_t, R_t, C_t, Q_t$ in our setup.
+    
+    \item We now know that a BS sensor has \textbf{poor information} in the tangential direction. In \autoref{fig:part2fB3-uncertainty_ellipse}, notice the dip in the length of the major axis. At this point, the \textbf{new information} in the radial direction reduces the uncertainty that was present when the particle started (here, the tangential direction has a positive cosine with the radial direction at the point of dip).
+
+    \item The Kalman Filter outputs $\Sigma_t$. To analyze the uncertainty in lower dimensions, it is only correct to project the motion onto the xy-plane, as in \autoref{fig:part2fB3-uncertainty_ellipse}, since all covariance terms are $0$. When this is not the case, for example, when using the BS sensors, the projection should be along the plane of eigen-directions. In simpler terms, the diagonal entries do not indicate uncertainty as well as the eigenvalues do, but this will be along the eigen-directions.
+\end{enumerate}

@@ -1,1 +1,2 @@
-# COL778-Principles-of-Autonomous-System
+# COL778-Principles-of-Autonomous-Systems
+My solutions to course assignments.
