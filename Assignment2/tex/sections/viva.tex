@@ -1,0 +1,9 @@
+\section{Viva Feedback}
+\begin{enumerate}
+\item 
+The \texttt{discrete DQN} implementation is not ideal. The speed levels and distance levels are discretized but have an inherent ordering. Using an embedding layer introduces entanglement into otherwise ordered and separable states, increasing the data requirement for effective learning.
+
+\item This is reflected in the lower performance of \texttt{DQN discrete} and slower initial learning (see \autoref{fig:part2-distance}).
+
+\item A naive strategy is to keep driving at speed~$1$. Other cars have speed~$1$ or~$2$. Over a total of $1000$ episodes, the distance traveled is $0.3 \times 1000 \times 1 = 300$, where $0.3$ is the time per step. The agent does not need to switch any lanes and will not collide.
+\end{enumerate}
